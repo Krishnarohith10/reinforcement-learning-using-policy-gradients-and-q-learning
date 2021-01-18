@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Nov 22 17:21:59 2020
-
-@author: krish
-"""
-
 import gym
 import numpy as np
 import tensorflow as tf
@@ -24,13 +17,6 @@ out = Activation('sigmoid')(logits)
 
 model = Model(inputs=X, outputs=[logits, out])
 
-p_left_right = tf.concat(axis=1, values=[out, 1-out])
-action = tf.random.categorical(tf.log(p_left_right), num_samples=1)
-y = 1 - tf.cast(action, tf.float32)
-
-loss_obj = losses.BinaryCrossentropy(from_logits=True)
-optimizer = optimizers.Adam(learning_rate=0.01)
-
 def discount_rewards(rewards, discount_rate):
     discounted_rewards = np.zeros(len(rewards))
     cumulative_rewards = 0
@@ -47,6 +33,9 @@ def discount_and_normalize_rewards(all_rewards, discount_rate):
     return [(discounted_rewards - reward_mean)/reward_std for discounted_rewards in all_discounted_rewards]
 
 env = gym.make('CartPole-v0')
+
+loss_obj = losses.BinaryCrossentropy(from_logits=True)
+optimizer = optimizers.Adam(learning_rate=0.01)
 
 @tf.function
 def train_step(inp):
@@ -93,4 +82,3 @@ for iteration in range(n_iterations):
         gradients.append(tf.convert_to_tensor(mean_gradients, dtype=tf.float32))
     
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-
