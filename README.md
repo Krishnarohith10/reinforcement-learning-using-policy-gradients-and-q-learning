@@ -18,4 +18,4 @@ Libraries used:
     gym - OpenAI gym is a toolkit that provides a wide variety of simulated environments (Atari games, board games, 2D and 3D physical simulations, and so on), so you can train agents, compare them, or develop new RL algorithms.  
     tensorflow - library for machine learning  
 
-policy_gradients.py - Training our reinforcement learning agent using policy gradients technique. Where our PG algorithm optimize the policy parameters following gradients towards higher rewards.  
+cart_pole_v0_using_policy_gradients.py - Training our reinforcement learning agent using policy gradients technique. Where our PG algorithm optimize the policy parameters following gradients towards higher rewards.  
