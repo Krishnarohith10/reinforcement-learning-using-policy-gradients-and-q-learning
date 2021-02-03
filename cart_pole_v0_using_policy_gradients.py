@@ -4,7 +4,8 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense, Input, Activation
 from tensorflow.keras import losses, optimizers, Model
 
-tf.compat.v1.enable_eager_execution()
+gpu=tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpu[0], enable=True)
 
 n_inputs = 4
 n_hidden = 4
@@ -42,13 +43,13 @@ def train_step(inp):
     with tf.GradientTape() as tape:
         logits, out = model(inp)
         p_left_right = tf.concat(axis=1, values=[out, 1-out])
-        action = tf.random.categorical(tf.log(p_left_right), num_samples=1)
+        action = tf.random.categorical(tf.math.log(p_left_right), num_samples=1)
         y = 1 - tf.cast(action, tf.float32)
         loss = loss_obj(y, logits)
     gradients = tape.gradient(loss, model.trainable_variables)
     return action, gradients
 
-n_iterations = 250
+n_iterations = 450
 
 for iteration in range(n_iterations):
     print("\rIteration: {}".format(iteration), end="")
@@ -82,3 +83,7 @@ for iteration in range(n_iterations):
         gradients.append(tf.convert_to_tensor(mean_gradients, dtype=tf.float32))
     
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+
+model.save('cart_pole_v0_using_policy_gradients.h5')
+env.close()
+
