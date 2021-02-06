@@ -19,3 +19,7 @@ Libraries used:
     tensorflow - library for machine learning  
 
 cart_pole_v0_using_policy_gradients.py - Training our reinforcement learning agent using policy gradients technique. Where our PG algorithm optimize the policy parameters following gradients towards higher rewards.  
+
+ms_pacman_v0_deep_q_learning.py - Training our reinforcment learning agent using q learning technique. Where we create two similar models, actor_model which is used to predict the state-action values. And other critic_model to predict the future state_action values and used for training actor_model. In the end, we use trained actor_model to predict action possibily the action with maximum state value. 
+
+Note: Running this python file, requires more memory, which is definitely bigger than 32GB. I have 32GB memory and I trained for only till 1+ lakh Iteration. Reinforcement Learning needs more memory, whereas Deep Learning needs more GPU memory.
